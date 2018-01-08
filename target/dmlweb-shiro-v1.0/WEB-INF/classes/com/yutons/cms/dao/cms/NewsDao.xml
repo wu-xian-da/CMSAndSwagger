@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yutons.cms.dao.cms.NewsDao">
+    <!--auto generated Code-->
+    <resultMap id="BaseResultMap" type="com.yutons.cms.bean.cms.News">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="create_id" property="createId" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime"/>
+        <result column="files" property="files" jdbcType="VARCHAR"/>
+        <result column="office_id" property="officeId" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="Base_Column_List">
+        id,
+        create_id,
+        create_time,
+        files,
+        office_id,
+        title,
+        content
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="news.id">
+        INSERT INTO cms_news (
+            id,
+            create_id,
+            create_time,
+            files,
+            office_id,
+            title,
+            content
+        ) VALUES (
+            #{news.id,jdbcType=INTEGER},
+            #{news.createId,jdbcType=INTEGER},
+            #{news.createTime},
+            #{news.files,jdbcType=VARCHAR},
+            #{news.officeId,jdbcType=INTEGER},
+            #{news.title,jdbcType=VARCHAR},
+            #{news.content,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="news.id">
+        INSERT INTO cms_news
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="news.id!=null">id,</if>
+            <if test="news.createId!=null">create_id,</if>
+            <if test="news.createTime!=null">create_time,</if>
+            <if test="news.files!=null">files,</if>
+            <if test="news.officeId!=null">office_id,</if>
+            <if test="news.title!=null">title,</if>
+            <if test="news.content!=null">content,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="news.id!=null">#{news.id,jdbcType=INTEGER},
+            </if>
+            <if test="news.createId!=null">#{news.createId,jdbcType=INTEGER},
+            </if>
+            <if test="news.createTime!=null">#{news.createTime},
+            </if>
+            <if test="news.files!=null">#{news.files,jdbcType=VARCHAR},
+            </if>
+            <if test="news.officeId!=null">#{news.officeId,jdbcType=INTEGER},
+            </if>
+            <if test="news.title!=null">#{news.title,jdbcType=VARCHAR},
+            </if>
+            <if test="news.content!=null">#{news.content,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO cms_news (
+        <include refid="Base_Column_List"/>
+        )VALUES
+        <foreach collection="newss" item="news" index="index" separator=",">
+            (
+            #{news.id,jdbcType=INTEGER},
+            #{news.createId,jdbcType=INTEGER},
+            #{news.createTime},
+            #{news.files,jdbcType=VARCHAR},
+            #{news.officeId,jdbcType=INTEGER},
+            #{news.title,jdbcType=VARCHAR},
+            #{news.content,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="update">
+        UPDATE cms_news
+        <set>
+            <if test="news.id != null">id= #{news.id,jdbcType=INTEGER},</if>
+            <if test="news.createId != null">create_id= #{news.createId,jdbcType=INTEGER},</if>
+            <if test="news.createTime != null">create_time= #{news.createTime},</if>
+            <if test="news.files != null">files= #{news.files,jdbcType=VARCHAR},</if>
+            <if test="news.officeId != null">office_id= #{news.officeId,jdbcType=INTEGER},</if>
+            <if test="news.title != null">title= #{news.title,jdbcType=VARCHAR},</if>
+            <if test="news.content != null">content= #{news.content,jdbcType=VARCHAR}</if>
+        </set>
+        WHERE id = #{news.id,jdbcType=INTEGER}
+    </update>
+    <select id="selectNewsByCondition" resultType="news">
+        <!---->
+        SELECT
+        a.id,
+        a.create_id createId,
+        b.staffname createName,
+        b.deptId deptId,
+        b.deptname deptName,
+        a.create_time createTime,
+        a.files,
+        a.office_id,
+        c.`name` officeName,
+        a.title,
+        a.content
+        FROM
+        cms_news a
+        LEFT JOIN view_user_dept_role b ON a.create_id = b.id
+        LEFT JOIN cms_office c ON a.office_id = c.id
+        <where>
+            <if test="news.createId!=null">
+                AND a.create_id=#{news.createId}
+            </if>
+            <if test="news.officeId!=null">
+                AND a.office_id=#{news.officeId}
+            </if>
+        </where>
+        order by 6 DESC
+        <if test="news.limit!=null">
+            LIMIT ${(news.page-1)*news.limit},
+            ${news.limit}
+        </if>
+    </select>
+    <select id="selectNewsCountByCondition" resultType="int">
+        SELECT
+        count(1)
+        FROM
+        cms_news a
+        LEFT JOIN view_user_dept_role b ON a.create_id = b.id
+        LEFT JOIN cms_office c ON a.office_id = c.id
+        <where>
+            <if test="news.createId!=null">
+                AND a.create_id=#{news.createId}
+            </if>
+        </where>
+    </select>
+    <select id="selectNewById" resultType="news">
+        <!---->
+        SELECT
+        cms_news.id,
+        cms_news.create_id createId,
+        cms_news.create_time createTime,
+        cms_news.files,
+        cms_news.office_id officeId,
+        cms_news.title,
+        cms_news.content
+        from cms_news
+        where id=#{id}
+    </select>
+    <delete id="deleteById">
+        DELETE FROM cms_news WHERE id=#{id}
+    </delete>
+    <select id="selectUdonsByCondition" resultType="udonBean">
+        <!---->
+        SELECT
+        a.id newsId,
+        a.create_id createId,
+        a.create_name createName,
+        a.create_dept_id createDeptId,
+        a.create_dept_name createDeptName,
+        a.create_time createTime,
+        a.files,
+        a.title,
+        a.content,
+        a.count,
+        a.office_id officeId,
+        a.dept_id deptId,
+        a.office_name officeName,
+        a.dept_code deptCode,
+        a.dept_name deptName,
+        a.dept_parant_id deptParantId
+        FROM
+        view_news_office_dept a
+        <where>
+            <if test="udonBean.newsId!=null">
+                id = #{udonBean.newsId}
+            </if>
+            <if test="udonBean.deptId!=null">
+                dept_id = #{udonBean.deptId}
+            </if>
+            <if test="udonBean.officeId!=null">
+                office_id = #{udonBean.officeId}
+            </if>
+        </where>
+        ORDER BY
+        6 DESC
+        <if test="udonBean.limit!=null">
+            LIMIT ${(udonBean.page-1)*udonBean.limit},
+            ${udonBean.limit}
+        </if>
+    </select>
+    <select id="getNewsTop5" resultType="news">
+        <!---->
+        SELECT
+        cms_news.id,
+        cms_news.create_id createId,
+        cms_news.create_time createTime,
+        cms_news.files,
+        cms_news.office_id officeId,
+        cms_news.title,
+        cms_news.content
+        from cms_news
+        order BY 3 desc
+        limit 1,5
+    </select>
+    <update id="updateUdonBean">
+        <!---->
+        UPDATE cms_news
+        <set>
+            <if test="udonBean.count != null">count= #{udonBean.count}</if>
+        </set>
+        WHERE id = #{udonBean.newsId}
+    </update>
+</mapper>
+

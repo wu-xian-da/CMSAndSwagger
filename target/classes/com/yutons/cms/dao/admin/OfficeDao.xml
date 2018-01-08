@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yutons.cms.dao.admin.OfficeDao">
+    <!--auto generated Code-->
+    <resultMap id="BaseResultMap" type="com.yutons.cms.bean.admin.Office">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="dept_id" property="deptId" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="Base_Column_List">
+        id,
+        dept_id,
+        name
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="office.id">
+        INSERT INTO cms_office (
+            id,
+            dept_id,
+            name
+        ) VALUES (
+            #{office.id,jdbcType=INTEGER},
+            #{office.deptId,jdbcType=INTEGER},
+            #{office.name,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="office.id">
+        INSERT INTO cms_office
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="office.id!=null">id,</if>
+            <if test="office.deptId!=null">dept_id,</if>
+            <if test="office.name!=null">name,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="office.id!=null">#{office.id,jdbcType=INTEGER},
+            </if>
+            <if test="office.deptId!=null">#{office.deptId,jdbcType=INTEGER},
+            </if>
+            <if test="office.name!=null">#{office.name,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO cms_office (
+        <include refid="Base_Column_List"/>
+        )VALUES
+        <foreach collection="offices" item="office" index="index" separator=",">
+            (
+            #{office.id,jdbcType=INTEGER},
+            #{office.deptId,jdbcType=INTEGER},
+            #{office.name,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="update">
+        UPDATE cms_office
+        <set>
+            <if test="office.id != null">id= #{office.id,jdbcType=INTEGER},</if>
+            <if test="office.deptId != null">dept_id= #{office.deptId,jdbcType=INTEGER},</if>
+            <if test="office.name != null">name= #{office.name,jdbcType=VARCHAR}</if>
+        </set>
+        WHERE id = #{office.id,jdbcType=INTEGER}
+    </update>
+    <select id="selectOfficesByCondition" resultType="office">
+        <!---->
+        SELECT
+        a.id,
+        a.dept_id deptId,
+        b.`name` deptName,
+        a.`name`
+        FROM
+        cms_office a LEFT JOIN
+        t_dept b ON a.dept_id=b.id
+        <where>
+            <if test="office.id!=null">
+                AND a.id=#{office.id}
+            </if>
+            <if test="office.deptId!=null">
+                AND a.dept_id=#{office.deptId}
+            </if>
+        </where>
+        <if test="office.limit!=null">
+            LIMIT ${(office.page-1)*office.limit},
+            ${office.limit}
+        </if>
+    </select>
+    <select id="selectOfficesCountByCondition" resultType="int">
+        <!---->
+        SELECT
+        count(1)
+        FROM
+        cms_office a LEFT JOIN
+        t_dept b ON a.dept_id=b.id
+    </select>
+    <select id="selectOfficesByRoleId" resultType="office">
+        <!---->
+        SELECT DISTINCT
+        a.id,
+        a.dept_id,
+        a.`name`
+        <if test="office.userId!=null">
+            ,b.user_id
+        </if>
+        from cms_office a
+        <if test="office.userId!=null">
+            LEFT JOIN cms_user_office b on a.id=b.office_id
+            WHERE b.user_id=#{office.userId}
+        </if>
+    </select>
+    <select id="getOfficeById" resultType="office">
+        <!---->
+        SELECT
+        a.id,
+        a.dept_id deptId,
+        a.`name`
+        FROM
+        cms_office a
+        WHERE
+        a.id = #{office.id}
+    </select>
+</mapper>
+

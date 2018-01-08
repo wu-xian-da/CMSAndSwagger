@@ -1,0 +1,2 @@
+supermanager:admin
+password:123456

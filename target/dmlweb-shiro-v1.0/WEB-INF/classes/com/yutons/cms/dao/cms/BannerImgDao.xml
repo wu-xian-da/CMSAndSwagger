@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yutons.cms.dao.cms.BannerImgDao">
+    <!--auto generated Code-->
+    <resultMap id="BaseResultMap" type="com.yutons.cms.bean.cms.BannerImg">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="loadpath" property="loadpath" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime"/>
+        <result column="xuhao" property="xuhao" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="Base_Column_List">
+        id,
+        loadpath,
+        name,
+        create_time,
+        xuhao
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="bannerImg.id">
+        INSERT INTO cms_banner_img (
+            id,
+            loadpath,
+            name,
+            create_time,
+            xuhao
+        ) VALUES (
+            #{bannerImg.id,jdbcType=INTEGER},
+            #{bannerImg.loadpath,jdbcType=VARCHAR},
+            #{bannerImg.name,jdbcType=VARCHAR},
+            #{bannerImg.createTime},
+            #{bannerImg.xuhao,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="bannerImg.id">
+        INSERT INTO cms_banner_img
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bannerImg.id!=null">id,</if>
+            <if test="bannerImg.loadpath!=null">loadpath,</if>
+            <if test="bannerImg.name!=null">name,</if>
+            <if test="bannerImg.createTime!=null">create_time,</if>
+            <if test="bannerImg.xuhao!=null">xuhao,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bannerImg.id!=null">#{bannerImg.id,jdbcType=INTEGER},
+            </if>
+            <if test="bannerImg.loadpath!=null">#{bannerImg.loadpath,jdbcType=VARCHAR},
+            </if>
+            <if test="bannerImg.name!=null">#{bannerImg.name,jdbcType=VARCHAR},
+            </if>
+            <if test="bannerImg.createTime!=null">#{bannerImg.createTime},
+            </if>
+            <if test="bannerImg.xuhao!=null">#{bannerImg.xuhao,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO cms_banner_img (
+        <include refid="Base_Column_List"/>
+        )VALUES
+        <foreach collection="bannerImgs" item="bannerImg" index="index" separator=",">
+            (
+            #{bannerImg.id,jdbcType=INTEGER},
+            #{bannerImg.loadpath,jdbcType=VARCHAR},
+            #{bannerImg.name,jdbcType=VARCHAR},
+            #{bannerImg.createTime},
+            #{bannerImg.xuhao,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="update">
+        UPDATE cms_banner_img
+        <set>
+            <if test="bannerImg.id != null">id= #{bannerImg.id,jdbcType=INTEGER},</if>
+            <if test="bannerImg.loadpath != null">loadpath= #{bannerImg.loadpath,jdbcType=VARCHAR},</if>
+            <if test="bannerImg.name != null">name= #{bannerImg.name,jdbcType=VARCHAR},</if>
+            <if test="bannerImg.createTime != null">create_time= #{bannerImg.createTime},</if>
+            <if test="bannerImg.xuhao != null">xuhao= #{bannerImg.xuhao,jdbcType=INTEGER}</if>
+        </set>
+        WHERE id = #{bannerImg.id,jdbcType=INTEGER}
+    </update>
+    <select id="selectObjectsByCondition" resultType="bannerimg">
+        <!---->
+        SELECT
+        a.id,
+        a.loadpath,
+        a.`name`,
+        a.create_time createTime,
+        a.xuhao
+        FROM
+        cms_banner_img a
+        <if test="bannerImg.limit!=null">
+            LIMIT ${(bannerImg.page-1)*bannerImg.limit},
+            ${bannerImg.limit}
+        </if>
+    </select>
+    <select id="selectObjectsCountByCondition" resultType="int">
+        <!---->
+        SELECT
+        count(1)
+        FROM
+        cms_banner_img a
+    </select>
+    <select id="selectLastXuhao" resultType="int">
+        <!---->
+        SELECT
+        max(xuhao)
+        FROM cms_banner_img
+    </select>
+    <delete id="deleteById">
+        DELETE  FROM cms_banner_img where id=#{bannerImg.id}
+    </delete>
+</mapper>
+

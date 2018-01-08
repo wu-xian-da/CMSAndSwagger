@@ -1,0 +1,30 @@
+iframe {
+    margin: 0;
+    padding: 0
+}
+
+.show_iframe {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.iframe {
+    position: absolute;
+    left: 0;
+    top: -1px;
+    z-index: -1
+}
+
+@media (max-width: 767px) {
+    .breadcrumb {
+        padding: 0 15px;
+    }
+
+    .show_iframe {
+        -webkit-overflow-scrolling: touch;
+        overflow-y: scroll;
+    }
+}
